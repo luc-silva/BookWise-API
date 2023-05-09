@@ -7,6 +7,7 @@ const AuthorSchema = new Schema({
     },
     birth_date: { type: Date },
     description: { type: String, default: "" },
-});
+},
+{ timestamps: true });
 
 export = model("Author", AuthorSchema);

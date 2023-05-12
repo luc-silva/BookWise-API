@@ -1,31 +1,32 @@
 import { Model, SessionOption, Types } from "mongoose";
 
-export abstract class Repository{
-    constructor (private model: Model<any>){
+export abstract class Repository {
+    constructor(private model: Model<any>) {
+        this.model = model;
     }
 
-    protected validateObjectId(objectId:string){
-        if(!Types.ObjectId.isValid(objectId)){
-            throw new Error("ID de usuário inválido.")
+    public validateObjectId(objectId: string) {
+        if (!Types.ObjectId.isValid(objectId)) {
+            throw new Error("ID de usuário inválido.");
         }
     }
 
-    protected async getItemDetails(bookId: string) {
+    public async getItemDetails(bookId: string) {
         this.validateObjectId(bookId);
         return await this.model.findById(bookId);
     }
 
-    protected async createItem() {
-        await this.model.create();
+    public async createItem(data:any) {
+        await this.model.create(data);
     }
 
-    protected async deleteItem(bookId: string, session?: SessionOption) {
+    public async deleteItem(bookId: string, session?: SessionOption) {
         this.validateObjectId(bookId);
         await this.model.findByIdAndDelete(bookId);
     }
 
-    protected async updateItem(bookId: string, bookData: any) {
+    public async updateItem(bookId: string, data:any) {
         this.validateObjectId(bookId);
-        await this.model.findByIdAndUpdate(bookId);
+        await this.model.findByIdAndUpdate(bookId, data);
     }
 }

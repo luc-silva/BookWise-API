@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
-import ResponseHandler from "./ResponseHandler";
+import ResponseHandler from "../utils/ResponseHandler";
 import jwt from "jsonwebtoken";
 import UserRepository from "../repositories/UserRepository";
 
@@ -24,8 +24,6 @@ export const protectedRoute = expressAsyncHandler(
             ResponseHandler.handleResponse(response, 401, "Não Autorizado. Sem Token.")
             throw new Error("Não Autorizado. Sem Token.")
         }
-
-        let user = UserRepository.getItemDetails
 
         next();
     }

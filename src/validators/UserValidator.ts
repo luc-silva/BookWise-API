@@ -1,4 +1,6 @@
-import { Response, response } from "express";
+import { UserData } from "../../global";
+import { Response } from "express";
+
 import ResponseHandler from "../utils/ResponseHandler";
 
 class UserValidator {
@@ -7,8 +9,8 @@ class UserValidator {
             this.validateEmail(email);
             this.validateName(name);
             this.validateUsername(username);
-        } catch (err:any) {
-            ResponseHandler.handleResponse(resObj, 400, err.message)
+        } catch (err: any) {
+            ResponseHandler.handleResponse(resObj, 400, err.message);
         }
     }
 
@@ -18,8 +20,11 @@ class UserValidator {
         }
     }
     validateName({ first, last }: { last?: string; first: string }) {
-        if ((last && last.length > 15) || !first || first.length > 15) {
+        if (!first || first.length > 15) {
             throw new Error("Campo nome inválido.");
+        }
+        if (last && last.length > 15) {
+            throw new Error("Campo sobrenome inválido.");
         }
     }
     validateUsername(username: string) {

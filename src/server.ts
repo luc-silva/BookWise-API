@@ -10,7 +10,7 @@ import { tagRouter } from "./routes/tag.routes";
 import { collectionRouter } from "./routes/collection.routes";
 import { handleError } from "./middleware/handleError";
 
-const app = express();
+export const app = express();
 dotenv.config();
 
 
@@ -22,12 +22,10 @@ mongoose.connection.on("connected", () => {
     console.log("Banco de dados MongoDB conectado.")
 })
 
-console.log(`API iniciada na porta: ${process.env.API_PORT}`);
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.listen(process.env.API_PORT);
 
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/author", authorRouter);

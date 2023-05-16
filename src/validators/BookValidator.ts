@@ -1,13 +1,19 @@
+import { Response } from "express";
 import { BookData } from "../../global";
+import ResponseHandler from "../utils/ResponseHandler";
 
 class BookValidator {
-    validateCreate(data: BookData) {
-        this.validateNameField(data.name);
-        this.validateEditionField(data.edition);
-        this.validatePagesField(data.pages);
-        this.validateReleasedDateField(data.released_date);
-        this.validateVolumeField(data.volume);
-        this.validateFranchiseField(data.franchise);
+    validateCreate(response: Response, data: BookData) {
+        try {
+            this.validateNameField(data.name);
+            this.validateEditionField(data.edition);
+            this.validatePagesField(data.pages);
+            this.validateReleasedDateField(data.released_date);
+            this.validateVolumeField(data.volume);
+            this.validateFranchiseField(data.franchise);
+        } catch (err: any) {
+            ResponseHandler.handleResponse(response, 400, err.message);
+        }
     }
 
     public validateNameField(name: string) {

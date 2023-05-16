@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/server.ts"
+    "server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/index.ts"
   },
   "author": "Lucas Santos",
   "license": "ISC",

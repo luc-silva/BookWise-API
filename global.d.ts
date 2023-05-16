@@ -1,20 +1,5 @@
 import { Request } from "express";
 
-declare global {
-    namespace Express {
-        interface Request {
-            user: string;
-        }
-    }
-    namespace NodeJS {
-        interface ProcessEnv {
-            JWT_SECRET: string;
-            API_PORT: string;
-            MONGODB_URI:string
-        }
-    }
-}
-
 interface UserData {
     name: {
         first: string;
@@ -32,4 +17,28 @@ interface BookData {
     released_date: Date;
     volume?: string;
     franchise?: string;
+}
+interface AuthorData {
+    name: {
+        first: string;
+        last?: string;
+    };
+    birth_date: string;
+    description: string;
+    genres: string[];
+}
+
+declare global {
+    namespace Express {
+        interface Request {
+            user: string;
+        }
+    }
+    namespace NodeJS {
+        interface ProcessEnv {
+            JWT_SECRET: string;
+            API_PORT: string;
+            MONGODB_URI: string;
+        }
+    }
 }

@@ -1,3 +1,5 @@
+import { BookData } from "../../global";
+
 class BookValidator {
     validateCreate(data: BookData) {
         this.validateNameField(data.name);
@@ -40,3 +42,5 @@ class BookValidator {
         }
     }
 }
+
+export default new BookValidator();

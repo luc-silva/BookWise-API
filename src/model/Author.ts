@@ -6,6 +6,7 @@ const AuthorSchema = new Schema({
         last: { type: String, maxlength:25},
     },
     birth_date: { type: Date },
+    genres:[{type:String, maxlength: 15, required:true}],
     description: { type: String, default: "", maxlength:250 },
 },
 { timestamps: true });

@@ -29,7 +29,7 @@ export const createBook = asyncHandler(
             throw new Error("Usuário não Encontrado");
         }
 
-        let data = { ...request.body, user: user.id };
+        let data = { ...request.body, user: user.id, status: "Not Read" };
         await BookRepository.createBook(data);
 
         response.status(200).json({ message: "Criado." });
@@ -69,7 +69,7 @@ export const getBookDetails = asyncHandler(
             throw new Error("Livro não encontrado.");
         }
 
-        if (bookDetails.user !== user.id) {
+        if (bookDetails.user.toString() !== user.id) {
             ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
             throw new Error("Não Autorizado.");
         }

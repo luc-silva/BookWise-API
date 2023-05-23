@@ -16,6 +16,7 @@ interface FetchedBookData extends BookData {
 }
 interface BookData {
     book_collection: string;
+    book_author: string;
     title: string;
     volume: string;
     pages: number;

@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { BookData } from "../../global";
 import ResponseHandler from "../utils/ResponseHandler";
+import { isValidObjectId } from "mongoose";
 
 class BookValidator {
     validateCreate(response: Response, data: BookData) {
@@ -11,6 +12,7 @@ class BookValidator {
             this.validateReleasedDateField(data.released_date);
             this.validateVolumeField(data.volume);
             this.validateFranchiseField(data.franchise);
+            this.validateBookAuthor(data.book_author)
         } catch (err: any) {
             ResponseHandler.handleResponse(response, 400, err.message);
         }
@@ -35,6 +37,13 @@ class BookValidator {
     public validateReleasedDateField(date: Date) {
         if (!date) {
             throw new Error("Campo data de lançamento inválido.");
+        }
+    }
+    public validateBookAuthor(author:string){
+        if(!isValidObjectId(author)){
+            if(!author || author.length > 30){
+                throw new Error("Campo autor inválido.");
+            }
         }
     }
     public validateVolumeField(volume?: string) {

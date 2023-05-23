@@ -5,7 +5,7 @@ import ResponseHandler from "../utils/ResponseHandler";
 class BookValidator {
     validateCreate(response: Response, data: BookData) {
         try {
-            this.validateNameField(data.name);
+            this.validateNameField(data.title);
             this.validateEditionField(data.edition);
             this.validatePagesField(data.pages);
             this.validateReleasedDateField(data.released_date);
@@ -16,8 +16,8 @@ class BookValidator {
         }
     }
 
-    public validateNameField(name: string) {
-        if (!name || name.length > 30) {
+    public validateNameField(title: string) {
+        if (!title || title.length > 30) {
             throw new Error("Campo nome inválido.");
         }
     }

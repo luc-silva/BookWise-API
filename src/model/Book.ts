@@ -5,7 +5,7 @@ const BookSchema = new Schema(
         user: { type: Schema.Types.ObjectId, ref: "User", required:true },
         book_collection: { type: Schema.Types.ObjectId, ref: "Collection" },
         book_author: { type: Schema.Types.ObjectId, ref: "Author" },
-        name: { type: String, required: true, maxlength: 30 },
+        title: { type: String, required: true, maxlength: 30 },
         edition: { type: String, required: true, maxlength: 15  },
         pages: { type: Number, required: true },
         released_date: { type: Date, required: true },

@@ -9,7 +9,12 @@ interface UserData {
     email: string;
     username: string;
 }
+
+interface FetchedBookData extends BookData {
+    user: string;
+}
 interface BookData {
+    book_collection: string;
     name: string;
     volume: string;
     pages: number;
@@ -40,5 +45,10 @@ declare global {
             API_PORT: string;
             MONGODB_URI: string;
         }
+    }
+}
+declare module "jsonwebtoken" {
+    interface JwtPayload {
+        id: string;
     }
 }

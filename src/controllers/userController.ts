@@ -6,6 +6,13 @@ import UserValidator from "../validators/UserValidator";
 import UserRepository from "../repositories/UserRepository";
 import { generateToken } from "../utils/tools";
 
+/**
+ * POST - Create user with given data.
+ * @param request - HTTP request object containing the user data.
+ * @param response - HTTP response object containing the conclusion of the query.
+ * @returns Conclusion message inside a object.
+ * @throws Return errors
+ */
 export const createUser = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body) {
@@ -14,7 +21,6 @@ export const createUser = asyncHandler(
         }
 
         UserValidator.validateUserData(request.body, response);
-
         let emailAlreadyUsed = await UserRepository.findUserByEmail(request.body.email)
         if(emailAlreadyUsed){
             ResponseHandler.handleResponse(response, 400, "Esse email já está sendo usado.")
@@ -26,6 +32,11 @@ export const createUser = asyncHandler(
     }
 );
 
+/**
+ * POST - Create user with given data.
+ * @param request - HTTP request object containing the user data.
+ * @param response - HTTP response object containing the conclusion of the query.
+ */
 export const loginUser = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body) {

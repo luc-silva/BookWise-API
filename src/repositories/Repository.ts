@@ -1,32 +1,58 @@
 import { Model, SessionOption, Types } from "mongoose";
 
+/**
+ * Base class for models repositories.
+ */
 export abstract class Repository {
     constructor(private model: Model<any>) {
         this.model = model;
     }
 
+    /**
+     * Check if given string is a valid MongoDB Object id.
+     * @param objectId Item object id.
+     */
     public validateObjectId(objectId: string) {
         if (!Types.ObjectId.isValid(objectId)) {
             throw new Error("ID de usuário inválido.");
         }
     }
 
-    public async getItemDetails(bookId: string) {
-        this.validateObjectId(bookId);
-        return await this.model.findById(bookId);
+    /**
+     * Get item details with given Object Id.
+     * @param itemId Item Object Id.
+     * @returns Object containing the item details
+     */
+    public async getItemDetails(itemId: string) {
+        this.validateObjectId(itemId);
+        return await this.model.findById(itemId);
     }
 
+    /**
+     * Create an item instance with given data.
+     * @param data Object containg the data.
+     */
     public async createItem(data:any) {
         await this.model.create(data);
     }
 
-    public async deleteItem(bookId: string, session?: SessionOption) {
-        this.validateObjectId(bookId);
-        await this.model.findByIdAndDelete(bookId);
+    /**
+     * Delete instance with given object id.
+     * @param itemId Item Object Id.
+     * @param session Transaction session options.
+     */
+    public async deleteItem(itemId: string, session?: SessionOption) {
+        this.validateObjectId(itemId);
+        await this.model.findByIdAndDelete(itemId);
     }
 
-    public async updateItem(bookId: string, data:any) {
-        this.validateObjectId(bookId);
-        await this.model.findByIdAndUpdate(bookId, data);
+    /**
+     * Update a instance with given object id and data.
+     * @param itemId Item Object Id.
+     * @param data Object containg the updated data.
+     */
+    public async updateItem(itemId: string, data:any) {
+        this.validateObjectId(itemId);
+        await this.model.findByIdAndUpdate(itemId, data);
     }
 }

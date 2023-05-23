@@ -56,17 +56,17 @@ export const getBookDetails = asyncHandler(
                 404,
                 "Usuário não encontrado."
             );
-            throw new Error("Usuário não encontrado.")
+            throw new Error("Usuário não encontrado.");
         }
 
         let bookDetails = await BookRepository.getBookDetails(id);
-        if(!bookDetails){
+        if (!bookDetails) {
             ResponseHandler.handleResponse(
                 response,
                 404,
                 "Livro não encontrado."
             );
-            throw new Error("Livro não encontrado.")
+            throw new Error("Livro não encontrado.");
         }
 
         if (bookDetails.user !== user.id) {
@@ -75,5 +75,32 @@ export const getBookDetails = asyncHandler(
         }
 
         response.status(200).json(bookDetails);
+    }
+);
+
+/**
+ * GET - Get books ids with given user object id.
+ * @param request - HTTP request object containing the user id.
+ * @param response - HTTP response object containing the book details.
+ */
+export const getUserBooks = asyncHandler(
+    async (request: Request, response: Response) => {
+        if (!request.user) {
+            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
+            throw new Error("Dados Inválidos.");
+        }
+
+        let user = await UserRepository.findUserById(request.user);
+        if (!user) {
+            ResponseHandler.handleResponse(
+                response,
+                404,
+                "Usuário não encontrado."
+            );
+            throw new Error("Usuário não encontrado.");
+        }
+
+        let books = await BookRepository.getBooksByUserId(user.id);
+        response.status(200).json(books);
     }
 );

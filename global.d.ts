@@ -12,6 +12,7 @@ interface UserData {
 
 interface FetchedBookData extends BookData {
     user: string;
+    _id: string;
 }
 interface BookData {
     book_collection: string;

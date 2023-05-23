@@ -1,7 +1,7 @@
 import { Model, SessionOption } from "mongoose";
 import { Repository } from "./Repository";
 import Book from "../model/Book";
-import { BookData } from "../../global";
+import { BookData, FetchedBookData } from "../../global";
 
 class BookRepository extends Repository {
     constructor(book: Model<any>) {
@@ -10,6 +10,16 @@ class BookRepository extends Repository {
 
     public async createBook(data: BookData) {
         await this.createItem(data);
+    }
+
+    public async getBookDetails(bookId: string): Promise<FetchedBookData> {
+        this.validateObjectId(bookId);
+        return await this.getItemDetails(bookId);
+    }
+
+    public async getBooksByUserId(userId: string) {
+        this.validateObjectId(userId);
+        return await Book.find({ user: userId }).select({ id: 1 });
     }
 }
 

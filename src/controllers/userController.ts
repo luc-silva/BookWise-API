@@ -21,13 +21,19 @@ export const createUser = asyncHandler(
         }
 
         UserValidator.validateUserData(request.body, response);
-        let emailAlreadyUsed = await UserRepository.findUserByEmail(request.body.email)
-        if(emailAlreadyUsed){
-            ResponseHandler.handleResponse(response, 400, "Esse email já está sendo usado.")
-            throw new Error("Esse email já está sendo usado.")
+        let emailAlreadyUsed = await UserRepository.findUserByEmail(
+            request.body.email
+        );
+        if (emailAlreadyUsed) {
+            ResponseHandler.handleResponse(
+                response,
+                400,
+                "Esse email já está sendo usado."
+            );
+            throw new Error("Esse email já está sendo usado.");
         }
 
-        await UserRepository.createItem(request.body);
+        await UserRepository.createUser(request.body);
         response.status(200).json({ message: "Criado." });
     }
 );
@@ -61,5 +67,29 @@ export const loginUser = asyncHandler(
         }
 
         response.status(200).json({ token: generateToken(user.id) });
+    }
+);
+
+/**
+ * GET - Get user reading status with given id.
+ * @param request - HTTP request object containing the user id.
+ * @param response - HTTP response object containing the conclusion of the query.
+ */
+export const getUserStatus = asyncHandler(
+    async (request: Request, response: Response) => {
+        if (!request.params || !request.user) {
+            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
+            throw new Error("Dados Inválidos.");
+        }
+
+        let { id } = request.params;
+        if (id !== request.user) {
+            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
+            throw new Error("Não Autorizado.");
+        }
+
+        let status = await UserRepository.getUserStatus(id);
+
+        response.status(200).json(status);
     }
 );

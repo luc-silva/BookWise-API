@@ -20,7 +20,7 @@ class UserRepository extends Repository {
         let dropped = await Book.find({ user: userId }).count({ status: "Dropped" });
         let total = (await Book.find({ user: userId })).length
 
-        return { read , not_read, dropped, total, total_read: read * 100 / total };
+        return { read , not_read, dropped, total, total_read: total > 0 ? read * 100 / total: 0 };
     }
 
     public async findUserById(userId: string) {

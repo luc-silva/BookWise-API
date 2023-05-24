@@ -12,7 +12,7 @@ export abstract class Repository {
      * Check if given string is a valid MongoDB Object id.
      * @param objectId Item object id.
      */
-    public validateObjectId(objectId: string) {
+    protected validateObjectId(objectId: string) {
         if (!Types.ObjectId.isValid(objectId)) {
             throw new Error("ID de usuário inválido.");
         }
@@ -23,7 +23,7 @@ export abstract class Repository {
      * @param itemId Item Object Id.
      * @returns Object containing the item details
      */
-    public async getItemDetails(itemId: string) {
+    protected async getItemDetails(itemId: string) {
         this.validateObjectId(itemId);
         return await this.model.findById(itemId);
     }
@@ -32,7 +32,7 @@ export abstract class Repository {
      * Create an item instance with given data.
      * @param data Object containg the data.
      */
-    public async createItem(data:any) {
+    protected async createItem(data:any) {
         await this.model.create(data);
     }
 
@@ -41,7 +41,7 @@ export abstract class Repository {
      * @param itemId Item Object Id.
      * @param session Transaction session options.
      */
-    public async deleteItem(itemId: string, session?: SessionOption) {
+    protected async deleteItem(itemId: string, session?: SessionOption) {
         this.validateObjectId(itemId);
         await this.model.findByIdAndDelete(itemId);
     }
@@ -51,7 +51,7 @@ export abstract class Repository {
      * @param itemId Item Object Id.
      * @param data Object containg the updated data.
      */
-    public async updateItem(itemId: string, data:any) {
+    protected async updateItem(itemId: string, data:any) {
         this.validateObjectId(itemId);
         await this.model.findByIdAndUpdate(itemId, data);
     }

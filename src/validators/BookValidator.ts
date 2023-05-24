@@ -18,40 +18,40 @@ class BookValidator {
         }
     }
 
-    public validateNameField(title: string) {
+    private validateNameField(title: string) {
         if (!title || title.length > 30) {
             throw new Error("Campo nome inválido.");
         }
     }
 
-    public validateEditionField(edition: string) {
+    private validateEditionField(edition: string) {
         if (!edition || edition.length > 15) {
             throw new Error("Campo edição inválido.");
         }
     }
-    public validatePagesField(pages: number) {
+    private validatePagesField(pages: number) {
         if (!pages || pages <= 0) {
             throw new Error("Campo pagínas inválido.");
         }
     }
-    public validateReleasedDateField(date: Date) {
+    private validateReleasedDateField(date: Date) {
         if (!date) {
             throw new Error("Campo data de lançamento inválido.");
         }
     }
-    public validateBookAuthor(author:string){
+    private validateBookAuthor(author:string){
         if(!isValidObjectId(author)){
             if(!author || author.length > 30){
                 throw new Error("Campo autor inválido.");
             }
         }
     }
-    public validateVolumeField(volume?: string) {
+    private validateVolumeField(volume?: string) {
         if (volume && volume.length > 10) {
             throw new Error("Campo volume inválido.");
         }
     }
-    public validateFranchiseField(franchise?: string) {
+    private validateFranchiseField(franchise?: string) {
         if (franchise && franchise.length > 30) {
             throw new Error("Campo franquia inválido.");
         }

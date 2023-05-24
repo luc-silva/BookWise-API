@@ -104,3 +104,71 @@ export const getUserBooks = asyncHandler(
         response.status(200).json(books);
     }
 );
+
+/**
+ * DELETE - Delete a book instance with given id.
+ * @param request - HTTP request object containing the book id.
+ * @param response - HTTP response object containing the conclusion message.
+ */
+export const deleteBook = asyncHandler(
+    async (request: Request, response: Response) => {
+        if (!request.params || !request.user) {
+            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
+            throw new Error("Dados Inválidos.");
+        }
+        let { id } = request.params;
+        let book = await BookRepository.getBookDetails(id);
+        if (!book) {
+            ResponseHandler.handleResponse(
+                response,
+                404,
+                "Livro não Encontrado."
+            );
+            throw new Error("Livro não Encontrado");
+        }
+
+        if (book.user.toString() !== request.user) {
+            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
+            throw new Error("Não Autorizado.");
+        }
+
+        await BookRepository.deleteBook(id);
+
+        response.status(200).json({ message: "Feito." });
+    }
+);
+
+/**
+ * PATCH - Update a book instance with given id and data.
+ * @param request - HTTP request object containing the user id.
+ * @param response - HTTP response object containing the book details.
+ */
+export const updateBook = asyncHandler(
+    async (request: Request, response: Response) => {
+        if (!request.params || !request.user || !request.body) {
+            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
+            throw new Error("Dados Inválidos.");
+        }
+
+        let { id } = request.params;
+        let book = await BookRepository.getBookDetails(id);
+        if (!book) {
+            ResponseHandler.handleResponse(
+                response,
+                404,
+                "Livro não Encontrado."
+            );
+            throw new Error("Livro não Encontrado");
+        }
+
+        if (book.user.toString() !== request.user) {
+            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
+            throw new Error("Não Autorizado.");
+        }
+
+        BookValidator.validateCreate(response, request.body);
+        await BookRepository.updateBook(id, request.body);
+
+        response.status(200).json({ message: "Feito." });
+    }
+);

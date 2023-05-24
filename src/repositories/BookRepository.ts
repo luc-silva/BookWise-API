@@ -12,6 +12,16 @@ class BookRepository extends Repository {
         await this.createItem(data);
     }
 
+    public async deleteBook(bookId: string) {
+        this.validateObjectId(bookId);
+        this.deleteItem(bookId);
+    }
+
+    public async updateBook(bookId: string, data: BookData) {
+        this.validateObjectId(bookId);
+        this.updateItem(bookId, data);
+    }
+
     public async getBookDetails(bookId: string): Promise<FetchedBookData> {
         this.validateObjectId(bookId);
         return await this.getItemDetails(bookId);

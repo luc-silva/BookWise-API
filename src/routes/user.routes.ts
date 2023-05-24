@@ -7,5 +7,5 @@ export const userRouter = Router()
 
 userRouter.post("/", createUser)
 userRouter.post("/login", loginUser)
-userRouter.get("/:id/status", getUserStatus)
+userRouter.get("/:id/status", protectedRoute, getUserStatus)
 userRouter.get("/books", protectedRoute, getUserBooks)

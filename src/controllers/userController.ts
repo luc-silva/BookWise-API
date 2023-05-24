@@ -66,7 +66,7 @@ export const loginUser = asyncHandler(
             throw new Error("Senha Inválida.");
         }
 
-        response.status(200).json({ token: generateToken(user.id) });
+        response.status(200).json({ token: generateToken(user.id), id:user.id });
     }
 );
 
@@ -77,7 +77,7 @@ export const loginUser = asyncHandler(
  */
 export const getUserStatus = asyncHandler(
     async (request: Request, response: Response) => {
-        if (!request.params || !request.user) {
+        if (!request.params.id || !request.user) {
             ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
             throw new Error("Dados Inválidos.");
         }

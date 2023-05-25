@@ -4,6 +4,7 @@ import ResponseHandler from "../utils/ResponseHandler";
 import BookValidator from "../validators/BookValidator";
 import UserRepository from "../repositories/UserRepository";
 import BookRepository from "../repositories/BookRepository";
+import ImageRepository from "../repositories/ImageRepository";
 
 /**
  * POST - Create book with given data.
@@ -12,12 +13,16 @@ import BookRepository from "../repositories/BookRepository";
  */
 export const createBook = asyncHandler(
     async (request: Request, response: Response) => {
-        if (!request.body || !request.user) {
+        if (!request.body || !request.user || !request.file) {
             ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
             throw new Error("Dados Inválidos.");
         }
 
-        BookValidator.validate(response, request.body);
+        let { bookDetails } = request.body;
+        let parsedBookDetails = JSON.parse(bookDetails);
+        console.log(parsedBookDetails);
+
+        BookValidator.validate(response, parsedBookDetails);
 
         let user = await UserRepository.findUserById(request.user);
         if (!user) {
@@ -29,8 +34,15 @@ export const createBook = asyncHandler(
             throw new Error("Usuário não Encontrado");
         }
 
-        let data = { ...request.body, user: user.id};
-        await BookRepository.createBook(data);
+        let data = { ...parsedBookDetails, user: user.id };
+        let book = await BookRepository.createBook(data);
+
+        let { buffer } = request.file;
+        await ImageRepository.createImage({
+            user: user.id,
+            book,
+            buffer,
+        });
 
         response.status(200).json({ message: "Criado." });
     }

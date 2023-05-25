@@ -3,9 +3,9 @@ import { Schema, model } from "mongoose";
 const BookSchema = new Schema(
     {
         user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-        book_collection: { type: Schema.Types.ObjectId, ref: "Collection" },
         book_author: { type: String, required: true, maxlength: 30 },
         title: { type: String, required: true, maxlength: 30 },
+        description: { type: String, required: true, maxlength: 300 },
         edition: { type: String, required: true, maxlength: 15 },
         tags: { type: String, required: true, maxlength: 15 },
         status: { type: String, required: true, maxlength: 10 },

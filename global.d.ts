@@ -18,6 +18,7 @@ interface BookData {
     book_collection: string;
     book_author: string;
     title: string;
+    description: string;
     volume: string;
     pages: number;
     edition: string;

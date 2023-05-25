@@ -4,7 +4,7 @@ import ResponseHandler from "../utils/ResponseHandler";
 import { isValidObjectId } from "mongoose";
 
 class BookValidator {
-    validateCreate(response: Response, data: BookData) {
+    validate(response: Response, data: BookData) {
         try {
             this.validateNameField(data.title);
             this.validateEditionField(data.edition);
@@ -13,6 +13,7 @@ class BookValidator {
             this.validateVolumeField(data.volume);
             this.validateFranchiseField(data.franchise);
             this.validateBookAuthor(data.book_author)
+            this.validateDescription(data.description)
         } catch (err: any) {
             ResponseHandler.handleResponse(response, 400, err.message);
         }
@@ -21,6 +22,12 @@ class BookValidator {
     private validateNameField(title: string) {
         if (!title || title.length > 30) {
             throw new Error("Campo nome inválido.");
+        }
+    }
+
+    private validateDescription(description:string){
+        if(description && description.length > 300){
+            throw new Error("Campo nome inválido.")
         }
     }
 

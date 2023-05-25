@@ -17,7 +17,7 @@ export const createBook = asyncHandler(
             throw new Error("Dados Inválidos.");
         }
 
-        BookValidator.validateCreate(response, request.body);
+        BookValidator.validate(response, request.body);
 
         let user = await UserRepository.findUserById(request.user);
         if (!user) {
@@ -29,7 +29,7 @@ export const createBook = asyncHandler(
             throw new Error("Usuário não Encontrado");
         }
 
-        let data = { ...request.body, user: user.id, status: "Not Read" };
+        let data = { ...request.body, user: user.id};
         await BookRepository.createBook(data);
 
         response.status(200).json({ message: "Criado." });
@@ -166,7 +166,7 @@ export const updateBook = asyncHandler(
             throw new Error("Não Autorizado.");
         }
 
-        BookValidator.validateCreate(response, request.body);
+        BookValidator.validate(response, request.body);
         await BookRepository.updateBook(id, request.body);
 
         response.status(200).json({ message: "Feito." });

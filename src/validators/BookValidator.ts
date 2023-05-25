@@ -12,8 +12,9 @@ class BookValidator {
             this.validateReleasedDateField(data.released_date);
             this.validateVolumeField(data.volume);
             this.validateFranchiseField(data.franchise);
-            this.validateBookAuthor(data.book_author)
-            this.validateDescription(data.description)
+            this.validateBookAuthor(data.book_author);
+            this.validateDescription(data.description);
+            this.validateStoreUrl(data.store_url);
         } catch (err: any) {
             ResponseHandler.handleResponse(response, 400, err.message);
         }
@@ -25,9 +26,15 @@ class BookValidator {
         }
     }
 
-    private validateDescription(description:string){
-        if(description && description.length > 300){
-            throw new Error("Campo nome inválido.")
+    private validateStoreUrl(url: string) {
+        if (url && url.length > 200) {
+            throw new Error("Campo url inválido.");
+        }
+    }
+
+    private validateDescription(description: string) {
+        if (description && description.length > 300) {
+            throw new Error("Campo nome inválido.");
         }
     }
 
@@ -46,9 +53,9 @@ class BookValidator {
             throw new Error("Campo data de lançamento inválido.");
         }
     }
-    private validateBookAuthor(author:string){
-        if(!isValidObjectId(author)){
-            if(!author || author.length > 30){
+    private validateBookAuthor(author: string) {
+        if (!isValidObjectId(author)) {
+            if (!author || author.length > 30) {
                 throw new Error("Campo autor inválido.");
             }
         }

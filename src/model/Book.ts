@@ -11,6 +11,7 @@ const BookSchema = new Schema(
         status: { type: String, required: true, maxlength: 10 },
         pages: { type: Number, required: true },
         released_date: { type: Date, required: true },
+        store_url: { type: String, maxlength: 200 },
         volume: { type: String, maxlength: 10 },
         franchise: { type: String, maxlength: 30 },
     },

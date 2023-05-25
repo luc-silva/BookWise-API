@@ -23,6 +23,7 @@ interface BookData {
     pages: number;
     edition: string;
     released_date: Date;
+    store_url: string;
     volume?: string;
     franchise?: string;
 }

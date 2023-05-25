@@ -32,8 +32,8 @@ export abstract class Repository {
      * Create an item instance with given data.
      * @param data Object containg the data.
      */
-    protected async createItem(data:any) {
-        await this.model.create(data);
+    protected async createItem(data:any):Promise<any> {
+        return await this.model.create(data);
     }
 
     /**

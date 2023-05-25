@@ -9,7 +9,7 @@ class BookRepository extends Repository {
     }
 
     public async createBook(data: BookData) {
-        await this.createItem(data);
+        return await this.createItem(data);
     }
 
     public async deleteBook(bookId: string) {

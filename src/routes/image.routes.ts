@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { protectedRoute } from "../middleware/auth";
-import { updateImage } from "../controllers/imageController";
+import { getImage, updateImage } from "../controllers/imageController";
 
-export const router = Router()
+export const imageRouter = Router()
 
-router.patch("/:id", protectedRoute, updateImage)
+imageRouter.get("/:id", protectedRoute, getImage)
+imageRouter.patch("/:id", protectedRoute, updateImage)

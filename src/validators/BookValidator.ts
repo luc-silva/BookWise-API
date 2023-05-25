@@ -22,7 +22,7 @@ class BookValidator {
 
     private validateNameField(title: string) {
         if (!title || title.length > 30) {
-            throw new Error("Campo nome inválido.");
+            throw new Error("Campo titulo inválido.");
         }
     }
 

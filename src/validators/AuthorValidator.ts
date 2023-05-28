@@ -21,27 +21,27 @@ class AuthorValidator {
         last?: string;
     }) {
         if (!first || first.length > 25) {
-            throw new Error("Campo nome inválido.");
+            throw new Error("Field name invalid.");
         }
         if (last && last.length > 25) {
-            throw new Error("Campo sobrenome inválido.");
+            throw new Error("Field name Invalid.");
         }
     }
 
     private validateGenres(genres: string[]) {
         if (genres.length < 1) {
-            throw new Error("Campo gênero inválido.");
+            throw new Error("Field Invalid.");
         }
         genres.forEach((genre) => {
             if (genre.length > 15) {
-                throw new Error(`Valor ${genre} é inválido.`);
+                throw new Error(`Field tags Invalid.`);
             }
         });
     }
 
     private validateDescription(description: string) {
         if (description && description.length > 250) {
-            throw new Error("Campo descrição inválido.");
+            throw new Error("Field description Invalid.");
         }
     }
 }

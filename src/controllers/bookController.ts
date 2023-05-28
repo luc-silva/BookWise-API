@@ -14,8 +14,8 @@ import ImageRepository from "../repositories/ImageRepository";
 export const createBook = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body || !request.user || !request.file) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         let { bookDetails } = request.body;
@@ -29,9 +29,9 @@ export const createBook = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Usuário não Encontrado."
+                "User Not Found."
             );
-            throw new Error("Usuário não Encontrado");
+            throw new Error("User Not Found");
         }
 
         let data = { ...parsedBookDetails, user: user.id };
@@ -44,7 +44,7 @@ export const createBook = asyncHandler(
             buffer,
         });
 
-        response.status(200).json({ message: "Criado." });
+        response.status(200).json({ message: "Created." });
     }
 );
 
@@ -56,8 +56,8 @@ export const createBook = asyncHandler(
 export const getBookDetails = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body || !request.user || !request.params) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
         let { id } = request.params;
 
@@ -66,9 +66,9 @@ export const getBookDetails = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Usuário não encontrado."
+                "User Not Found."
             );
-            throw new Error("Usuário não encontrado.");
+            throw new Error("User Not Found.");
         }
 
         let bookDetails = await BookRepository.getBookDetails(id);
@@ -76,9 +76,9 @@ export const getBookDetails = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Livro não encontrado."
+                "Book Not Found."
             );
-            throw new Error("Livro não encontrado.");
+            throw new Error("Book Not Found.");
         }
 
         let bookImage = await ImageRepository.getImageByBookId(bookDetails._id);
@@ -86,14 +86,14 @@ export const getBookDetails = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Image não encontrada."
+                "Image Not Found."
             );
-            throw new Error("Image não encontrada.");
+            throw new Error("Image Not Found.");
         }
 
         if (bookDetails.user.toString() !== user.id) {
-            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
-            throw new Error("Não Autorizado.");
+            ResponseHandler.handleResponse(response, 401, "Not Authorized.");
+            throw new Error("Not Authorized.");
         }
 
         response.status(200).json({ bookDetails, image: bookImage });
@@ -108,8 +108,8 @@ export const getBookDetails = asyncHandler(
 export const getUserBooks = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.user) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         let user = await UserRepository.findUserById(request.user);
@@ -117,9 +117,9 @@ export const getUserBooks = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Usuário não encontrado."
+                "User Not Found."
             );
-            throw new Error("Usuário não encontrado.");
+            throw new Error("User Not Found.");
         }
 
         let books = await BookRepository.getBooksByUserId(user.id);
@@ -135,8 +135,8 @@ export const getUserBooks = asyncHandler(
 export const deleteBook = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.params || !request.user) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
         let { id } = request.params;
         let book = await BookRepository.getBookDetails(id);
@@ -144,19 +144,19 @@ export const deleteBook = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Livro não Encontrado."
+                "Book Not Found."
             );
-            throw new Error("Livro não Encontrado");
+            throw new Error("Book Not Found");
         }
 
         if (book.user.toString() !== request.user) {
-            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
-            throw new Error("Não Autorizado.");
+            ResponseHandler.handleResponse(response, 401, "Not Authorized.");
+            throw new Error("Not Authorized.");
         }
 
         await BookRepository.deleteBook(id);
 
-        response.status(200).json({ message: "Feito." });
+        response.status(200).json({ message: "Done." });
     }
 );
 
@@ -168,8 +168,8 @@ export const deleteBook = asyncHandler(
 export const updateBook = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.params || !request.user || !request.body) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         let { id } = request.params;
@@ -178,19 +178,19 @@ export const updateBook = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Livro não Encontrado."
+                "Book Not Found."
             );
-            throw new Error("Livro não Encontrado");
+            throw new Error("Book Not Found");
         }
 
         if (book.user.toString() !== request.user) {
-            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
-            throw new Error("Não Autorizado.");
+            ResponseHandler.handleResponse(response, 401, "Not Authorized.");
+            throw new Error("Not Authorized.");
         }
 
         BookValidator.validate(response, request.body);
         await BookRepository.updateBook(id, request.body);
 
-        response.status(200).json({ message: "Feito." });
+        response.status(200).json({ message: "Done." });
     }
 );

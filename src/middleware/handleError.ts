@@ -5,5 +5,5 @@ export const handleError = (
     request: Request,
     response: Response
 ) => {
-    response.status(500).json({ message: `Houve um erro interno: ${err}` });
+    response.status(500).json({ message: `Something Went Wrong: ${err}` });
 };

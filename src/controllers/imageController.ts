@@ -33,9 +33,9 @@ export const updateImage = asyncHandler(
             ResponseHandler.handleResponse(
                 response,
                 404,
-                "Imagem não encontrada."
+                "Image Not Found."
             );
-            throw new Error("Imagem não encontrada.");
+            throw new Error("Image Not Found.");
         }
 
         if (image.user.toString() !== user.id) {
@@ -57,15 +57,15 @@ export const updateImage = asyncHandler(
 export const getImage = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.user || !request.params) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
         let { id } = request.params;
 
         let image = await ImageRepository.getImageById(id);
         if(!image){
-            ResponseHandler.handleResponse(response, 404, "Imagem não encontrada.");
-            throw new Error("Imagem não encontrada.");
+            ResponseHandler.handleResponse(response, 404, "Image Not Found.");
+            throw new Error("Image Not Found.");
         }
 
         response.status(200).json(image);

@@ -13,7 +13,7 @@ const upload = multer({
         const allowed = /jpg|png|jpeg/;
         let ext = allowed.test(extname(file.originalname));
         if (!ext) {
-            callback(new Error("Imagem Inválida"));
+            callback(new Error("Invalid Image."));
         } else {
             return callback(null, true);
         }

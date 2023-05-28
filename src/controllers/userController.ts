@@ -16,8 +16,8 @@ import { generateToken } from "../utils/tools";
 export const createUser = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         UserValidator.validateUserData(request.body, response);
@@ -46,8 +46,8 @@ export const createUser = asyncHandler(
 export const loginUser = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.body) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         let { email, password } = request.body;
@@ -78,14 +78,14 @@ export const loginUser = asyncHandler(
 export const getUserStatus = asyncHandler(
     async (request: Request, response: Response) => {
         if (!request.params.id || !request.user) {
-            ResponseHandler.handleResponse(response, 400, "Dados Inválidos.");
-            throw new Error("Dados Inválidos.");
+            ResponseHandler.handleResponse(response, 400, "Invalid Data.");
+            throw new Error("Invalid Data.");
         }
 
         let { id } = request.params;
         if (id !== request.user) {
-            ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
-            throw new Error("Não Autorizado.");
+            ResponseHandler.handleResponse(response, 401, "Not Authorized.");
+            throw new Error("Not Authorized.");
         }
 
         let status = await UserRepository.getUserStatus(id);

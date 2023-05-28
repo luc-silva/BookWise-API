@@ -22,52 +22,52 @@ class BookValidator {
 
     private validateNameField(title: string) {
         if (!title || title.length > 30) {
-            throw new Error("Campo titulo inválido.");
+            throw new Error("Field title invalid.");
         }
     }
 
     private validateStoreUrl(url: string) {
         if (url && url.length > 200) {
-            throw new Error("Campo url inválido.");
+            throw new Error("Field store url invalid.");
         }
     }
 
     private validateDescription(description: string) {
         if (description && description.length > 300) {
-            throw new Error("Campo nome inválido.");
+            throw new Error("Field description invalid.");
         }
     }
 
     private validateEditionField(edition: string) {
         if (!edition || edition.length > 15) {
-            throw new Error("Campo edição inválido.");
+            throw new Error("Field edition invalid.");
         }
     }
     private validatePagesField(pages: number) {
         if (!pages || pages <= 0) {
-            throw new Error("Campo pagínas inválido.");
+            throw new Error("Field pages invalid.");
         }
     }
     private validateReleasedDateField(date: Date) {
         if (!date) {
-            throw new Error("Campo data de lançamento inválido.");
+            throw new Error("Field release date invalid.");
         }
     }
     private validateBookAuthor(author: string) {
         if (!isValidObjectId(author)) {
             if (!author || author.length > 30) {
-                throw new Error("Campo autor inválido.");
+                throw new Error("Field author invalid.");
             }
         }
     }
     private validateVolumeField(volume?: string) {
         if (volume && volume.length > 10) {
-            throw new Error("Campo volume inválido.");
+            throw new Error("Field volume invalid.");
         }
     }
     private validateFranchiseField(franchise?: string) {
         if (franchise && franchise.length > 30) {
-            throw new Error("Campo franquia inválido.");
+            throw new Error("Field franchise invalid.");
         }
     }
 }

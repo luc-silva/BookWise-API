@@ -16,20 +16,20 @@ class UserValidator {
 
     validateEmail(email: string) {
         if (!email || email.length > 25) {
-            throw new Error("Campo email inválido.");
+            throw new Error("Field email invalid.");
         }
     }
     validateName({ first, last }: { last?: string; first: string }) {
         if (!first || first.length > 15) {
-            throw new Error("Campo nome inválido.");
+            throw new Error("Field name invalid.");
         }
         if (last && last.length > 15) {
-            throw new Error("Campo sobrenome inválido.");
+            throw new Error("Field name invalid.");
         }
     }
     validateUsername(username: string) {
         if (!username || username.length > 15) {
-            throw new Error("Campo nome de usuário inválido.");
+            throw new Error("Field username invalid.");
         }
     }
 }

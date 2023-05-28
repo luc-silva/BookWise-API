@@ -40,7 +40,7 @@ export const createBook = asyncHandler(
         let { buffer } = request.file;
         await ImageRepository.createImage({
             user: user.id,
-            book,
+            book: book.id,
             buffer,
         });
 
@@ -81,12 +81,22 @@ export const getBookDetails = asyncHandler(
             throw new Error("Livro não encontrado.");
         }
 
+        let bookImage = await ImageRepository.getImageByBookId(bookDetails._id);
+        if (!bookImage) {
+            ResponseHandler.handleResponse(
+                response,
+                404,
+                "Image não encontrada."
+            );
+            throw new Error("Image não encontrada.");
+        }
+
         if (bookDetails.user.toString() !== user.id) {
             ResponseHandler.handleResponse(response, 401, "Não Autorizado.");
             throw new Error("Não Autorizado.");
         }
 
-        response.status(200).json(bookDetails);
+        response.status(200).json({ bookDetails, image: bookImage });
     }
 );
 

@@ -7,6 +7,7 @@ import { bookRouter } from "./routes/book.routes";
 import { userRouter } from "./routes/user.routes";
 import { handleError } from "./middleware/handleError";
 import { connectDb } from "./utils/connectDatabase";
+import { imageRouter } from "./routes/image.routes";
 
 export const app = express();
 dotenv.config();
@@ -20,4 +21,5 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/book", bookRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/image", imageRouter);
 app.use(handleError)

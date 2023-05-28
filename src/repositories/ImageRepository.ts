@@ -18,5 +18,10 @@ class ImageRepository extends Repository {
     public async getImageById(imageId: string) {
         return await this.getItemDetails(imageId);
     }
+
+    public async getImageByBookId(bookId: string) {
+        this.validateObjectId(bookId);
+        return await Image.findOne({ book: bookId });
+    }
 }
 export default new ImageRepository(Image);

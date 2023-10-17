@@ -2,31 +2,57 @@
   "name": "bookwise-api",
   "version": "1.0.0",
   "description": "",
+  "main": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules ./src/index.ts"
+    "server": "nest start",
+    "test": "jest ./src/test",
+    "format": "prettier -w ./src",
+    "lint": "eslint ./src"
+  },
+  "husky": {
+    "hooks": {
+      
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint",
+      "npm run format",
+      "npm run test"
+    ]
   },
   "author": "Lucas Santos",
   "license": "ISC",
   "dependencies": {
+    "@nestjs/cli": "^10.1.18",
+    "@nestjs/common": "^10.2.7",
+    "@nestjs/core": "^10.2.7",
+    "@prisma/client": "^5.4.2",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.1.0",
     "multer": "^1.4.5-lts.1",
-    "ts-jest": "^29.1.0",
-    "ts-node-dev": "^2.0.0",
+    "prettier": "^3.0.3",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.1",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "jest": "^29.5.0"
+    "@commitlint/cli": "^17.8.0",
+    "@commitlint/config-conventional": "^17.8.0",
+    "@types/jest": "^29.5.5",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.51.0",
+    "husky": "^8.0.3",
+    "jest": "^29.5.0",
+    "lint-staged": "^15.0.1",
+    "ts-jest": "^29.1.1"
   }
 }

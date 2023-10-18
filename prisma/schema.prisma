@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,133 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Image {
+  id      Int    @id @unique(map: "id") @default(autoincrement())
+  type    String @db.VarChar(20)
+  referer Int
+  data    Bytes  @db.Blob
+}
+
+model UserAccount {
+  id           Int            @id @unique(map: "id") @default(autoincrement())
+  created_at   DateTime       @db.DateTime(0)
+  first_name   String         @db.VarChar(100)
+  middle_name  String         @db.VarChar(100)
+  city         String         @db.VarChar(150)
+  state        String         @db.VarChar(150)
+  aboutText    String?        @db.VarChar(500)
+  Bookshelf    Bookshelf[]
+  Comment      Comment[]
+  GroupDetails GroupDetails[]
+  Post         Post[]
+  Review       Review[]
+  Topic        Topic[]
+}
+
+model Author {
+  id              Int       @id @unique(map: "id") @default(autoincrement())
+  first_name      String    @db.VarChar(100)
+  last_name       String    @db.VarChar(100)
+  about           String?   @db.VarChar(500)
+  nationality     String    @db.VarChar(100)
+  birth_date      DateTime  @db.Date
+  has_author_died Boolean
+  death_date      DateTime? @db.Date
+  Book            Book[]
+}
+
+model Book {
+  id             Int      @id @unique(map: "id") @default(autoincrement())
+  author_id      Int
+  pages          Int
+  title          String   @db.VarChar(150)
+  description    String?  @db.VarChar(500)
+  store_url      String?  @db.VarChar(500)
+  published_date DateTime @db.Date
+  Author         Author   @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Book_ibfk_1")
+  Review         Review[]
+  Topic          Topic[]
+
+  @@index([author_id], map: "author_id")
+}
+
+model Bookshelf {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  user_id     Int
+  title       String      @db.VarChar(80)
+  deletable   Boolean
+  shareable   Boolean
+  UserAccount UserAccount @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Bookshelf_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model Comment {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  user_id     Int
+  referer     Int
+  type        String      @db.VarChar(30)
+  text        String      @db.VarChar(250)
+  UserAccount UserAccount @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comment_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model Genre {
+  id          Int     @id @unique(map: "id") @default(autoincrement())
+  name        String  @db.VarChar(100)
+  description String? @db.VarChar(200)
+}
+
+model GroupDetails {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  founder_id  Int
+  created_at  DateTime    @db.DateTime(0)
+  name        String      @db.VarChar(120)
+  details     String?     @db.VarChar(500)
+  UserAccount UserAccount @relation(fields: [founder_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GroupDetails_ibfk_1")
+
+  @@index([founder_id], map: "founder_id")
+}
+
+model Post {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  user_id     Int
+  text        String      @db.VarChar(500)
+  UserAccount UserAccount @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_ibfk_1")
+
+  @@index([user_id], map: "user_id")
+}
+
+model Review {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  user_id     Int
+  book_id     Int
+  score       Int
+  text        String?     @db.VarChar(250)
+  UserAccount UserAccount @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Review_ibfk_1")
+  Book        Book        @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Review_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([user_id], map: "user_id")
+}
+
+model Tag {
+  id    Int    @id @unique(map: "id") @default(autoincrement())
+  trend String @db.VarChar(100)
+}
+
+model Topic {
+  id          Int         @id @unique(map: "id") @default(autoincrement())
+  user_id     Int
+  book_id     Int
+  text        String      @db.VarChar(500)
+  title       String      @db.VarChar(100)
+  UserAccount UserAccount @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Topic_ibfk_1")
+  Book        Book        @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Topic_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([user_id], map: "user_id")
 }

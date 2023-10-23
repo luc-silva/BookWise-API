@@ -7,32 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Image {
-  id      Int    @id @unique(map: "id") @default(autoincrement())
-  type    String @db.VarChar(20)
-  referer Int
-  data    Bytes  @db.Blob
-}
-
-model UserAccount {
-  id                Int                 @id @unique(map: "id") @default(autoincrement())
-  email             String              @unique(map: "email") @db.VarChar(120)
-  password          String              @db.VarChar(56)
-  created_at        DateTime            @db.DateTime(0)
-  first_name        String              @db.VarChar(100)
-  middle_name       String              @db.VarChar(100)
-  city              String              @db.VarChar(150)
-  state             String              @db.VarChar(150)
-  aboutText         String?             @db.VarChar(500)
-  Bookshelf         Bookshelf[]
-  Comment           Comment[]
-  GroupDetails      GroupDetails[]
-  GroupUserJunction GroupUserJunction[] @ignore
-  Post              Post[]
-  Review            Review[]
-  Topic             Topic[]
-}
-
 model Author {
   id              Int       @id @unique(map: "id") @default(autoincrement())
   first_name      String    @db.VarChar(100)
@@ -62,6 +36,18 @@ model Book {
   @@index([author_id], map: "author_id")
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model BookGenreJunction {
+  book_id  Int
+  genre_id Int
+  Book     Book  @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookGenreJunction_ibfk_1")
+  Genre    Genre @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookGenreJunction_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([genre_id], map: "genre_id")
+  @@ignore
+}
+
 model Bookshelf {
   id                    Int                     @id @unique(map: "id") @default(autoincrement())
   user_id               Int
@@ -72,6 +58,18 @@ model Bookshelf {
   BookshelfBookJunction BookshelfBookJunction[] @ignore
 
   @@index([user_id], map: "user_id")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model BookshelfBookJunction {
+  bookshelf_id Int
+  book_id      Int
+  Bookshelf    Bookshelf @relation(fields: [bookshelf_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookshelfBookJunction_ibfk_1")
+  Book         Book      @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookshelfBookJunction_ibfk_2")
+
+  @@index([book_id], map: "book_id")
+  @@index([bookshelf_id], map: "bookshelf_id")
+  @@ignore
 }
 
 model Comment {
@@ -104,6 +102,25 @@ model GroupDetails {
   @@index([founder_id], map: "founder_id")
 }
 
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model GroupUserJunction {
+  group_id     Int
+  user_id      Int
+  GroupDetails GroupDetails @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GroupUserJunction_ibfk_1")
+  UserAccount  UserAccount  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GroupUserJunction_ibfk_2")
+
+  @@index([group_id], map: "group_id")
+  @@index([user_id], map: "user_id")
+  @@ignore
+}
+
+model Image {
+  id      Int    @id @unique(map: "id") @default(autoincrement())
+  type    String @db.VarChar(20)
+  referer Int
+  data    Bytes  @db.Blob
+}
+
 model Post {
   id              Int               @id @unique(map: "id") @default(autoincrement())
   user_id         Int
@@ -112,6 +129,18 @@ model Post {
   PostTagJunction PostTagJunction[] @ignore
 
   @@index([user_id], map: "user_id")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model PostTagJunction {
+  post_id Int
+  tag_id  Int
+  Post    Post @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PostTagJunction_ibfk_1")
+  Tag     Tag  @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PostTagJunction_ibfk_2")
+
+  @@index([post_id], map: "post_id")
+  @@index([tag_id], map: "tag_id")
+  @@ignore
 }
 
 model Review {
@@ -146,50 +175,21 @@ model Topic {
   @@index([user_id], map: "user_id")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model BookGenreJunction {
-  book_id  Int
-  genre_id Int
-  Book     Book  @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookGenreJunction_ibfk_1")
-  Genre    Genre @relation(fields: [genre_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookGenreJunction_ibfk_2")
-
-  @@index([book_id], map: "book_id")
-  @@index([genre_id], map: "genre_id")
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model BookshelfBookJunction {
-  bookshelf_id Int
-  book_id      Int
-  Bookshelf    Bookshelf @relation(fields: [bookshelf_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookshelfBookJunction_ibfk_1")
-  Book         Book      @relation(fields: [book_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "BookshelfBookJunction_ibfk_2")
-
-  @@index([book_id], map: "book_id")
-  @@index([bookshelf_id], map: "bookshelf_id")
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model GroupUserJunction {
-  group_id     Int
-  user_id      Int
-  GroupDetails GroupDetails @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GroupUserJunction_ibfk_1")
-  UserAccount  UserAccount  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "GroupUserJunction_ibfk_2")
-
-  @@index([group_id], map: "group_id")
-  @@index([user_id], map: "user_id")
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model PostTagJunction {
-  post_id Int
-  tag_id  Int
-  Post    Post @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PostTagJunction_ibfk_1")
-  Tag     Tag  @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "PostTagJunction_ibfk_2")
-
-  @@index([post_id], map: "post_id")
-  @@index([tag_id], map: "tag_id")
-  @@ignore
+model UserAccount {
+  id                Int                 @id @unique(map: "id") @default(autoincrement())
+  email             String              @unique(map: "email") @db.VarChar(120)
+  password          String              @db.VarChar(56)
+  created_at        DateTime            @db.DateTime(0)
+  first_name        String              @db.VarChar(100)
+  middle_name       String              @db.VarChar(100)
+  city              String              @db.VarChar(150)
+  country           String              @db.VarChar(150)
+  about_text        String?             @db.VarChar(500)
+  Bookshelf         Bookshelf[]
+  Comment           Comment[]
+  GroupDetails      GroupDetails[]
+  GroupUserJunction GroupUserJunction[] @ignore
+  Post              Post[]
+  Review            Review[]
+  Topic             Topic[]
 }

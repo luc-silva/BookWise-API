@@ -6,6 +6,6 @@ interface UserAccount {
   first_name: string;
   middle_name: string;
   city: string;
-  state: string;
+  country: string;
   about_text: string;
 }

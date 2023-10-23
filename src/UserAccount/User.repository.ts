@@ -3,6 +3,13 @@ import { PrismaService } from "../utils/PrismaService";
 
 @Injectable()
 export class UserRepository {
-    constructor (prismaService:PrismaService){}
-    
+  constructor(private prismaService: PrismaService) {}
+
+  async createAccount(data: UserAccount) {
+    this.prismaService.userAccount.create({ data });
+  }
+
+  async getById(id: number) {
+    return this.prismaService.userAccount.findUnique({ where: { id } });
+  }
 }

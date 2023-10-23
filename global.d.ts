@@ -1,41 +1,4 @@
-import { Request } from "express";
-
-interface UserData {
-    name: {
-        first: string;
-        last?: string;
-    };
-    password: string;
-    email: string;
-    username: string;
-}
-
-interface FetchedBookData extends BookData {
-    user: string;
-    _id: string;
-}
-interface BookData {
-    book_collection: string;
-    book_author: string;
-    title: string;
-    description: string;
-    volume: string;
-    pages: number;
-    edition: string;
-    released_date: Date;
-    store_url: string;
-    volume?: string;
-    franchise?: string;
-}
-interface AuthorData {
-    name: {
-        first: string;
-        last?: string;
-    };
-    birth_date: string;
-    description: string;
-    genres: string[];
-}
+import { Request } from "express"; 
 
 declare global {
     namespace Express {
@@ -46,13 +9,12 @@ declare global {
     namespace NodeJS {
         interface ProcessEnv {
             JWT_SECRET: string;
-            API_PORT: string;
-            MONGODB_URI: string;
+            API_PORT: string; 
         }
     }
 }
 declare module "jsonwebtoken" {
     interface JwtPayload {
-        id: string;
+        id: number;
     }
 }

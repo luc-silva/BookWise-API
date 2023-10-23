@@ -1,6 +1,6 @@
-import { Module } from "@nestjs/common"; 
-import { PrismaService } from "../utils/PrismaService"; 
+import { Module } from "@nestjs/common";  
 import { CommentController } from "../Comment/Comment.controller";
+import { PrismaService } from "../../utils/PrismaService";
 
 @Module({
   controllers: [CommentController], 

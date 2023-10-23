@@ -1,10 +1,5 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-
-import { handleError } from "./middleware/handleError";
 import { NestFactory } from "@nestjs/core";
-import { ServerModule } from "./server.module";
+import { ServerModule } from "./app/server.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 
 async function BookwiseApi() {

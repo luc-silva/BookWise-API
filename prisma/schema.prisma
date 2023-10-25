@@ -118,7 +118,7 @@ model Image {
   id      Int    @id @unique(map: "id") @default(autoincrement())
   type    String @db.VarChar(20)
   referer Int
-  data    Bytes  @db.Blob
+  data    Bytes?
 }
 
 model Post {
